@@ -28,13 +28,24 @@ df %>%
   arrange(desc(n_tissue_types))
 # Whole Blood and Muscle - Skeletal have the highest number of samples with 3288 and 1132 respectively
 # Blood and skeletal muscle are in excess in the body, which could mean that they are easier to obtain samples of
-  
-help(filter)
+
+subset(df, SUBJECT == "GTEX-NPJ8")
+df_npj8 <- subset(df, SUBJECT == "GTEX-NPJ8")
+
+df_npj8 %>%
+  group_by(SMTSD) %>%
+  summarize(n_of_samples=n()) %>%
+  arrange(desc(n_of_samples))
+# Most samples = whole blood
+view(df_npj8)
+# Tissues have different sequencing techniques
 
 df %>%
-  filter(SUBJECT == "GTEX-NPJ8") %>%
-  group_by(SMTSD) %>%
-  summarize(counts=n()) %>%
-  arrange(desc(counts))
-
+  filter( !is.na(SMATSSCR) ) %>%
+  group_by(SMATSSCR) %>%
+  summarize(n())
   
+# 3554 subjects have a smatsscr score of 0
+# the majority of subjects have a mean score of 1
+# Histogram or bar graph
+
