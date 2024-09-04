@@ -9,7 +9,7 @@
 - (base) cmdb@QuantBio-16 day2-morning % grep "ENSG00000168036" hg38-gene-metadata-go.tsv | sort -k 3 > gene_ENSG00000168036.tsv
     - This gene is implicated in hundreds of different processes, so I would assume that this gene might be involved in development of an organism
 
-#Q3
+#Q3.1
 - (base) cmdb@QuantBio-16 day2-morning % grep -e "IG_._gene" gene.gtf | cut -f 1 |   uniq -c | sort
     - 1 chr21
     - 6 chr16
@@ -30,4 +30,11 @@
     - 84 chr14
     - In terms of distribution, pseudogenes are found across more chromosomes than IG genes
 
-    
+#Q3.2
+- The reason grep pseudogene gene.gtf is not effective is that there might be overlaps with other gene names or descriptions that could include the word "pseudogene."
+- A better way would be to specifically search:
+- grep 'gene_type "pseudogene"' gene.gtf
+- ^ This ensures that you are filtering based on the correct key-value pair for the gene type
+
+#Q3.3
+- cut -f1,4,5,14 gene-tabs.gtf > genes.bed
