@@ -1,0 +1,33 @@
+
+
+
+
+
+Analysis Type:	PANTHER Overrepresentation Test (Released 20240807)
+Annotation Version and Release Date:	GO Ontology database DOI:  10.5281/zenodo.12173881 Released 2024-06-17
+Analyzed List:	upload_1 (Drosophila melanogaster)
+Reference List:	Drosophila melanogaster (all genes in database)
+Test Type:	FISHER
+Correction:	FDR
+GO biological process complete	Drosophila melanogaster - REFLIST (13821)	upload_1 (120)	upload_1 (expected)	upload_1 (over/under)	upload_1 (fold Enrichment)	upload_1 (raw P-value)	upload_1 (FDR)
+negative regulation of biosynthetic process of antibacterial peptides active against Gram-negative bacteria (GO:0002814)	6	3	.05	+	57.59	1.25E-05	1.54E-02
+negative regulation of antibacterial peptide biosynthetic process (GO:0002809)	7	3	.06	+	49.36	2.18E-05	2.29E-02
+negative regulation of antimicrobial peptide biosynthetic process (GO:0002806)	7	3	.06	+	49.36	2.18E-05	2.00E-02
+negative regulation of antibacterial peptide production (GO:0002787)	7	3	.06	+	49.36	2.18E-05	1.78E-02
+peptidoglycan metabolic process (GO:0000270)	8	3	.07	+	43.19	3.46E-05	2.12E-02
+peptidoglycan catabolic process (GO:0009253)	8	3	.07	+	43.19	3.46E-05	1.96E-02
+sphingolipid catabolic process (GO:0030149)	14	4	.12	+	32.91	5.06E-06	1.24E-02
+membrane lipid catabolic process (GO:0046466)	14	4	.12	+	32.91	5.06E-06	9.30E-03
+glycosaminoglycan catabolic process (GO:0006027)	12	3	.10	+	28.79	1.33E-04	4.65E-02
+ceramide metabolic process (GO:0006672)	22	4	.19	+	20.94	3.50E-05	1.84E-02
+lipid catabolic process (GO:0016042)	130	12	1.13	+	10.63	1.28E-09	9.41E-06
+cellular lipid catabolic process (GO:0044242)	84	6	.73	+	8.23	8.84E-05	3.42E-02
+amide metabolic process (GO:0043603)	152	8	1.32	+	6.06	5.29E-05	2.29E-02
+lipid metabolic process (GO:0006629)	529	15	4.59	+	3.27	5.29E-05	2.16E-02
+multicellular organismal process (GO:0032501)	2907	8	25.24	-	.32	2.36E-05	1.74E-02
+anatomical structure development (GO:0048856)	2502	6	21.72	-	.28	3.81E-05	1.87E-02
+developmental process (GO:0032502)	2633	6	22.86	-	.26	1.14E-05	1.68E-02
+sexual reproduction (GO:0019953)	1155	0	10.03	-	 < 0.01	4.28E-05	1.97E-02
+multicellular organismal reproductive process (GO:0048609)	1103	0	9.58	-	 < 0.01	1.10E-04	4.04E-02
+reproductive process (GO:0022414)	1433	0	12.44	-	 < 0.01	3.00E-06	1.10E-02
+cellular component biogenesis (GO:0044085)	1217	0	10.57	-	 < 0.01	2.79E-05	1.86E-02
