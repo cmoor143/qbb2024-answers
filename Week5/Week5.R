@@ -1,10 +1,4 @@
-# install new packages
-BiocManager::install("DESeq2")
-BiocManager::install("vsn")
-install.packages("ggfortify")
-install.packages("hexbin")
-
-# Load libraries we'll need
+# Load necessary libraries
 library(DESeq2)
 library(vsn)
 library(matrixStats)
@@ -13,113 +7,93 @@ library(dplyr)
 library(tibble)
 library(hexbin)
 library(ggfortify)
+library(ggplot2)  # Ensure ggplot2 is loaded
 
-# Load tab-separated data file
-data = readr::read_tsv('salmon.merged.gene_counts.tsv')
+# Load file and parse
+data = readr::read_tsv('salmon.merged.gene_counts.tsv') %>%
+  column_to_rownames(var = "gene_name") %>%
+  select(-gene_id) %>%
+  mutate_if(is.numeric, as.integer) %>%
+  filter(rowSums(across()) > 100) # Filter out low counts
 
-# Change gene names into row names
-data = column_to_rownames(data, var="gene_name")
+# Pull out narrow region samples (21 columns)
+narrow = data %>% select("A1_Rep1":"P2-4_Rep3")
 
-# Get rid of gene id column
-data = data %>% select(-gene_id)
+# Create metadata tibble
+narrow_metadata = tibble(
+  tissue = as.factor(c("A1", "A1", "A1", 
+                       "A2-3", "A2-3", "A2-3", 
+                       "Cu", "Cu", "Cu", 
+                       "LFC-Fe", "LFC-Fe", "LFC-Fe", 
+                       "Fe", "Fe", "Fe",
+                       "P1", "P1", "P1", 
+                       "P2-4", "P2-4", "P2-4")),
+  rep = as.factor(c(1, 2, 3, 1, 2, 3, 1, 2, 3, 
+                    1, 2, 3, 1, 2, 3, 1, 2, 3, 
+                    1, 2, 3))
+)
 
-# Change data to integers
-data = data %>% mutate_if(is.numeric, as.integer)
+# Create DESeq2 object
+narrowdata = DESeqDataSetFromMatrix(countData = as.matrix(narrow), 
+                                    colData = narrow_metadata, 
+                                    design = ~ tissue)
 
-# Remove low coverage samples
-data = data[rowSums(data) > 100,]
+# Plot variance by average (before VST)
+meanSdPlot(assay(narrowdata))
 
-# Pull out broad region samples
-broad = data %>% select("A1-3_Rep1":"P1-4_Rep3")
+# Perform variance stabilization transformation
+narrowVstdata = vst(narrowdata)
 
-# Create metadata tibble with tissues and replicate numbers based on sample names
-broad_metadata = tibble(tissue=as.factor(c("A1_3", "A1_3", "A1_3", "Cu_LFC_Fe", "Cu_LFC_Fe", "Cu_LFC_Fe", "P1_4", "P1_4", "P1_4")),
-                        rep=as.factor(c(1, 2, 3, 1, 2, 3, 1, 2, 3)))
+# Ensure narrowVstdata is a DESeqDataSet object (not converted to matrix yet)
+# No need for conversion before PCA
 
-# Create a DESeq data object
-broaddata = DESeqDataSetFromMatrix(countData=as.matrix(broad), colData=broad_metadata, design=~tissue)
+# Calculate mean across replicates
+combined = (assay(narrowVstdata)[, seq(1, 21, 3)] + 
+              assay(narrowVstdata)[, seq(2, 21, 3)] + 
+              assay(narrowVstdata)[, seq(3, 21, 3)]) / 3
 
-# Plot variance by average
-meanSdPlot(assay(broaddata))
+# Filter out low variance genes
+sds = rowSds(combined) > 1 # Where row STDEV > 1
+narrowVstdata = narrowVstdata[sds,]
 
-# Log transform data
-broadLogdata = normTransform(broaddata) # log(1 + data)
-
-# Plot log-transformed data variance by average
-meanSdPlot(assay(broadLogdata))
-
-# Create PCA data
-broadPcaData = plotPCA(broadLogdata,intgroup=c("rep","tissue"), returnData=TRUE)
-
-# Plot PCA data
-ggplot(broadPcaData, aes(PC1, PC2, color=tissue, shape=rep)) +
-  geom_point(size=5)
-
-# Batch-correct data to remove excess variance with variance stabilizing transformation
-broadVstdata = vst(broaddata)
-
-# Plot variance by average to verify the removal of batch-effects
-meanSdPlot(assay(broadVstdata))
-
-# Perform PCA and plot to check batch-correction
-broadPcaData = plotPCA(broadVstdata,intgroup=c("rep","tissue"), returnData=TRUE)
-ggplot(broadPcaData, aes(PC1, PC2, color=tissue, shape=rep)) +
-  geom_point(size=5)
-
-# Save PCA Plot
-ggsave("~/qbb2024-answers/week5/PCAPlot.png")
-
-# Convert into a matrix
-broadVstdata = as.matrix(assay(broadVstdata[sds>1,]))
-
-# Find replicate means
-combined = broadVstdata[,seq(1, 9, 3)]
-combined = combined + broadVstdata[,seq(2, 9, 3)]
-combined = combined + broadVstdata[,seq(3, 9, 3)]
-combined = combined / 3
-
-# Use replicate means to filter low variance genes out
-filt = rowSds(combined) > 1
-broadVstdata = broadVstdata[filt,]
-
-# Plot expression values with hierarchical clustering
-heatmap(broadVstdata, Colv=NA)
-
-# Perform new hierarchical clustering with different clustering method
-distance = dist(broadVstdata)
-Z = hclust(distance, method='ave')
-
-# Plot expression values with new hierarchical clustering
-heatmap(broadVstdata, Colv=NA, Rowv=as.dendrogram(Z))
-
-# Set seed so this clustering is reproducible
+# Set seed for reproducibility
 set.seed(42)
 
-# Cluster genes using k-means clustering
-k=kmeans(broadVstdata, centers=12)$cluster
+# Cluster genes
+k = kmeans(assay(narrowVstdata), centers = 12)$cluster
 
-# Find ordering of samples to put them into their clusters
+# Find ordering of samples
 ordering = order(k)
 
 # Reorder genes
 k = k[ordering]
 
 # Plot heatmap of expressions and clusters
-heatmap(broadVstdata[ordering,],Rowv=NA,Colv=NA,RowSideColors = RColorBrewer::brewer.pal(12,"Paired")[k])
+heatmap(assay(narrowVstdata)[ordering,], Rowv = NA, Colv = NA, 
+        RowSideColors = RColorBrewer::brewer.pal(12, "Paired")[k], 
+        main = "Heatmap of Gene Clusters")
 
-# Save heatmap
-png("heatmap.png")
-heatmap(broadVstdata[ordering,],Rowv=NA,Colv=NA,RowSideColors = RColorBrewer::brewer.pal(12,"Paired")[k])
+# Save heatmap as image
+png("heatmap.jpg")
 dev.off()
 
-# Pull out gene names from a specific cluster
-genes = rownames(broadVstdata[k == 9,])
+# Pull out gene names from cluster 1
+genes = rownames(assay(narrowVstdata)[k == 1, ])
 
-# Same gene names to a text file
-write.table(genes, "cluster_genes.txt", sep="\n", quote=FALSE, row.names=FALSE, col.names=FALSE)
+# Write gene names to a text file
+write.table(genes, "cluster_genes.txt", sep = "\n", quote = FALSE, 
+            row.names = FALSE, col.names = FALSE)
 
-# Use "narrow region" samples
-narrow = data %>%
-  select(starts_with("A1"), starts_with("A2-3"), starts_with("Cu"), 
-         starts_with("LFC-Fe"), starts_with("Fe"), starts_with("P1"), 
-         starts_with("P2-4"))
+# PCA analysis and plot
+narrowPcaData = plotPCA(narrowVstdata, intgroup = c("rep", "tissue"), returnData = TRUE)
+
+# Create PCA plot
+pca_plot <- ggplot(narrowPcaData, aes(x = PC1, y = PC2, color = tissue, shape = rep)) +
+  geom_point(size = 5) +
+  theme_minimal() +  # Added a theme for better aesthetics
+  labs(title = "PCA of Narrow Region Samples",
+       x = "Principal Component 1",
+       y = "Principal Component 2")
+
+# Save the plot
+ggsave("PCA.png", plot = pca_plot)
