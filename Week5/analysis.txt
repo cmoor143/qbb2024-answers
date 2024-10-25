@@ -9,25 +9,60 @@ Analyzed List:	upload_1 (Drosophila melanogaster)
 Reference List:	Drosophila melanogaster (all genes in database)
 Test Type:	FISHER
 Correction:	FDR
-GO biological process complete	Drosophila melanogaster - REFLIST (13821)	upload_1 (120)	upload_1 (expected)	upload_1 (over/under)	upload_1 (fold Enrichment)	upload_1 (raw P-value)	upload_1 (FDR)
-negative regulation of biosynthetic process of antibacterial peptides active against Gram-negative bacteria (GO:0002814)	6	3	.05	+	57.59	1.25E-05	1.54E-02
-negative regulation of antibacterial peptide biosynthetic process (GO:0002809)	7	3	.06	+	49.36	2.18E-05	2.29E-02
-negative regulation of antimicrobial peptide biosynthetic process (GO:0002806)	7	3	.06	+	49.36	2.18E-05	2.00E-02
-negative regulation of antibacterial peptide production (GO:0002787)	7	3	.06	+	49.36	2.18E-05	1.78E-02
-peptidoglycan metabolic process (GO:0000270)	8	3	.07	+	43.19	3.46E-05	2.12E-02
-peptidoglycan catabolic process (GO:0009253)	8	3	.07	+	43.19	3.46E-05	1.96E-02
-sphingolipid catabolic process (GO:0030149)	14	4	.12	+	32.91	5.06E-06	1.24E-02
-membrane lipid catabolic process (GO:0046466)	14	4	.12	+	32.91	5.06E-06	9.30E-03
-glycosaminoglycan catabolic process (GO:0006027)	12	3	.10	+	28.79	1.33E-04	4.65E-02
-ceramide metabolic process (GO:0006672)	22	4	.19	+	20.94	3.50E-05	1.84E-02
-lipid catabolic process (GO:0016042)	130	12	1.13	+	10.63	1.28E-09	9.41E-06
-cellular lipid catabolic process (GO:0044242)	84	6	.73	+	8.23	8.84E-05	3.42E-02
-amide metabolic process (GO:0043603)	152	8	1.32	+	6.06	5.29E-05	2.29E-02
-lipid metabolic process (GO:0006629)	529	15	4.59	+	3.27	5.29E-05	2.16E-02
-multicellular organismal process (GO:0032501)	2907	8	25.24	-	.32	2.36E-05	1.74E-02
-anatomical structure development (GO:0048856)	2502	6	21.72	-	.28	3.81E-05	1.87E-02
-developmental process (GO:0032502)	2633	6	22.86	-	.26	1.14E-05	1.68E-02
-sexual reproduction (GO:0019953)	1155	0	10.03	-	 < 0.01	4.28E-05	1.97E-02
-multicellular organismal reproductive process (GO:0048609)	1103	0	9.58	-	 < 0.01	1.10E-04	4.04E-02
-reproductive process (GO:0022414)	1433	0	12.44	-	 < 0.01	3.00E-06	1.10E-02
-cellular component biogenesis (GO:0044085)	1217	0	10.57	-	 < 0.01	2.79E-05	1.86E-02
+GO biological process complete	Drosophila melanogaster - REFLIST (13821)	upload_1 (101)	upload_1 (expected)	upload_1 (over/under)	upload_1 (fold Enrichment)	upload_1 (raw P-value)	upload_1 (FDR)
+glutamine biosynthetic process (GO:0006542)	2	2	.01	+	 > 100	5.29E-05	1.18E-02
+positive regulation of cell proliferation involved in compound eye morphogenesis (GO:2000497)	2	2	.01	+	 > 100	5.29E-05	1.14E-02
+ethanol metabolic process (GO:0006067)	2	2	.01	+	 > 100	5.29E-05	1.11E-02
+negative regulation of oskar mRNA translation (GO:0007319)	8	3	.06	+	51.32	2.07E-05	5.06E-03
+regulation of oskar mRNA translation (GO:0046011)	16	4	.12	+	34.21	4.57E-06	1.29E-03
+vitelline membrane formation involved in chorion-containing eggshell formation (GO:0007305)	13	3	.10	+	31.58	1.03E-04	1.84E-02
+vitelline membrane formation (GO:0030704)	13	3	.10	+	31.58	1.03E-04	1.80E-02
+egg coat formation (GO:0035803)	13	3	.10	+	31.58	1.03E-04	1.76E-02
+chorion-containing eggshell formation (GO:0007304)	55	9	.40	+	22.39	1.99E-10	4.88E-07
+eggshell formation (GO:0030703)	58	9	.42	+	21.23	3.27E-10	4.01E-07
+NADH metabolic process (GO:0006734)	35	4	.26	+	15.64	1.18E-04	1.89E-02
+midgut development (GO:0007494)	37	4	.27	+	14.79	1.47E-04	2.26E-02
+NAD metabolic process (GO:0019674)	44	4	.32	+	12.44	2.91E-04	4.04E-02
+carbohydrate catabolic process (GO:0016052)	64	5	.47	+	10.69	1.02E-04	1.88E-02
+Malpighian tubule development (GO:0072002)	65	5	.48	+	10.53	1.10E-04	1.84E-02
+renal tubule development (GO:0061326)	65	5	.48	+	10.53	1.10E-04	1.80E-02
+digestive system development (GO:0055123)	112	8	.82	+	9.77	1.56E-06	4.79E-04
+digestive tract development (GO:0048565)	112	8	.82	+	9.77	1.56E-06	4.60E-04
+renal system development (GO:0072001)	74	5	.54	+	9.25	2.04E-04	3.00E-02
+response to toxic substance (GO:0009636)	80	5	.58	+	8.55	2.94E-04	4.00E-02
+follicle cell of egg chamber development (GO:0030707)	241	13	1.76	+	7.38	2.09E-08	8.54E-06
+epithelial cell development (GO:0002064)	270	13	1.97	+	6.59	7.98E-08	2.94E-05
+cellular anatomical entity morphogenesis (GO:0032989)	147	7	1.07	+	6.52	9.96E-05	1.93E-02
+cellular component assembly involved in morphogenesis (GO:0010927)	147	7	1.07	+	6.52	9.96E-05	1.88E-02
+epithelial cell differentiation (GO:0030855)	321	15	2.35	+	6.39	1.09E-08	5.02E-06
+carbohydrate metabolic process (GO:0005975)	240	10	1.75	+	5.70	9.96E-06	2.62E-03
+tube development (GO:0035295)	246	10	1.80	+	5.56	1.24E-05	3.13E-03
+female gamete generation (GO:0007292)	591	23	4.32	+	5.33	3.01E-11	2.21E-07
+anterior/posterior pattern specification (GO:0009952)	181	7	1.32	+	5.29	3.59E-04	4.72E-02
+epithelium development (GO:0060429)	546	21	3.99	+	5.26	3.12E-10	5.74E-07
+oogenesis (GO:0048477)	541	20	3.95	+	5.06	1.75E-09	1.43E-06
+tissue development (GO:0009888)	638	21	4.66	+	4.50	5.13E-09	2.69E-06
+germ cell development (GO:0007281)	679	22	4.96	+	4.43	2.77E-09	1.85E-06
+cellular process involved in reproduction in multicellular organism (GO:0022412)	731	23	5.34	+	4.31	1.97E-09	1.45E-06
+gamete generation (GO:0007276)	876	26	6.40	+	4.06	4.81E-10	4.43E-07
+anatomical structure formation involved in morphogenesis (GO:0048646)	534	15	3.90	+	3.84	7.26E-06	1.98E-03
+multicellular organismal reproductive process (GO:0048609)	1103	30	8.06	+	3.72	1.29E-10	4.75E-07
+developmental process involved in reproduction (GO:0003006)	894	23	6.53	+	3.52	8.54E-08	2.99E-05
+regionalization (GO:0003002)	476	12	3.48	+	3.45	1.79E-04	2.69E-02
+sexual reproduction (GO:0019953)	1155	28	8.44	+	3.32	8.42E-09	4.13E-06
+embryo development (GO:0009790)	500	12	3.65	+	3.28	2.81E-04	3.98E-02
+pattern specification process (GO:0007389)	505	12	3.69	+	3.25	3.08E-04	4.12E-02
+cell differentiation (GO:0030154)	1541	35	11.26	+	3.11	3.26E-10	4.80E-07
+cellular developmental process (GO:0048869)	1543	35	11.28	+	3.10	3.38E-10	3.55E-07
+cell development (GO:0048468)	1290	28	9.43	+	2.97	9.12E-08	3.05E-05
+reproductive process (GO:0022414)	1433	31	10.47	+	2.96	1.57E-08	6.78E-06
+proteolysis (GO:0006508)	811	17	5.93	+	2.87	7.46E-05	1.48E-02
+anatomical structure morphogenesis (GO:0009653)	1441	30	10.53	+	2.85	6.91E-08	2.67E-05
+nervous system development (GO:0007399)	975	18	7.13	+	2.53	2.23E-04	3.22E-02
+anatomical structure development (GO:0048856)	2502	44	18.28	+	2.41	4.17E-09	2.56E-06
+system development (GO:0048731)	1311	23	9.58	+	2.40	5.59E-05	1.14E-02
+developmental process (GO:0032502)	2633	45	19.24	+	2.34	4.27E-09	2.42E-06
+multicellular organismal process (GO:0032501)	2907	44	21.24	+	2.07	4.13E-07	1.32E-04
+multicellular organism development (GO:0007275)	2057	30	15.03	+	2.00	1.19E-04	1.86E-02
+biological_process (GO:0008150)	11319	97	82.72	+	1.17	3.96E-05	9.11E-03
+Unclassified (UNCLASSIFIED)	2502	4	18.28	-	.22	3.96E-05	9.40E-03
