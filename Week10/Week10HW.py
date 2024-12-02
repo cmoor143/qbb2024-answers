@@ -2,7 +2,7 @@
 
 import os
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
 from skimage import io
 from scipy.ndimage import label
 
@@ -29,7 +29,6 @@ def load_image_data(genes, fields, channels):
             if len(images) == len(channels):
                 # Stack the three channels into a single array
                 image_data[f"{gene}_{field}"] = np.stack(images, axis=-1)
-                print(f"{gene}_{field}: {image_data[f'{gene}_{field}'].shape}")
     
     return image_data
 
@@ -53,56 +52,67 @@ def filter_by_size(label_array, min_size=100, max_size=np.inf):
     filtered_labels = np.isin(label_array, valid_labels) * label_array
     return filtered_labels
 
-def filter_by_statistical_size(label_array):
-    """Filters labels by mean ± standard deviation of their sizes."""
-    sizes = np.bincount(label_array.ravel())
-    sizes[0] = 0  # Ignore background
+def calculate_signals(image, label_array):
+    """Calculates mean PCNA, nascent RNA signals, and log2 ratio for each nucleus."""
+    pcna_channel = image[..., 0]
+    nascent_channel = image[..., 1]
     
-    mean_size = np.mean(sizes[sizes > 0])
-    std_size = np.std(sizes[sizes > 0])
+    pcna_signals = []
+    nascent_signals = []
+    log2_ratios = []
     
-    lower_bound = mean_size - std_size
-    upper_bound = mean_size + std_size
+    # Iterate over labels (excluding 0, the background)
+    for label_id in range(1, np.amax(label_array) + 1):
+        where = np.where(label_array == label_id)
+        
+        pcna_signal = np.mean(pcna_channel[where])
+        nascent_signal = np.mean(nascent_channel[where])
+        log2_ratio = np.log2(nascent_signal / pcna_signal) if pcna_signal > 0 else np.nan
+        
+        pcna_signals.append(pcna_signal)
+        nascent_signals.append(nascent_signal)
+        log2_ratios.append(log2_ratio)
     
-    return filter_by_size(label_array, min_size=lower_bound, max_size=upper_bound)
+    return pcna_signals, nascent_signals, log2_ratios
 
 def process_images(image_data):
-    """Processes images: segmentation, labeling, and filtering."""
+    """Processes images to calculate signal values."""
+    results = []
+    
     for key, image in image_data.items():
-        dapi_channel = image[:, :, 2]  # Extract DAPI channel
+        gene, field = key.split("_")
         
-        # Step 2.1: Create binary mask
+        # Step 2.1: Create mask
+        dapi_channel = image[..., 2]
         mask = create_dapi_mask(dapi_channel)
         
-        # Step 2.2: Generate label map
-        label_array, num_labels = find_labels(mask)
-        print(f"{key}: Found {num_labels} initial labels.")
+        # Step 2.2: Find labels
+        label_array, _ = find_labels(mask)
         
-        # Step 2.3: Filter outliers by size
-        filtered_label_array = filter_by_size(label_array, min_size=100)
-        final_label_array = filter_by_statistical_size(filtered_label_array)
+        # Step 2.3: Filter by size
+        filtered_labels = filter_by_size(label_array, min_size=100)
         
-        # Visualize results
-        plt.figure(figsize=(12, 4))
-        plt.subplot(1, 3, 1)
-        plt.imshow(mask, cmap='gray')
-        plt.title(f"Binary Mask: {key}")
+        # Step 3.1: Calculate signals
+        pcna_signals, nascent_signals, log2_ratios = calculate_signals(image, filtered_labels)
         
-        plt.subplot(1, 3, 2)
-        plt.imshow(label_array, cmap='nipy_spectral')
-        plt.title(f"Labeled: {key}")
-        
-        plt.subplot(1, 3, 3)
-        plt.imshow(final_label_array, cmap='nipy_spectral')
-        plt.title(f"Filtered Labels: {key}")
-        
-        plt.tight_layout()
-        plt.show()
+        # Combine results
+        for pcna, nascent, ratio in zip(pcna_signals, nascent_signals, log2_ratios):
+            results.append((gene, pcna, nascent, ratio))
+    
+    return results
 
-# Main script
+def save_results(results):
+    """Saves results to a CSV file."""
+    df = pd.DataFrame(results, columns=["Gene", "PCNA", "NascentRNA", "Log2Ratio"])
+    df.to_csv("nucleus_signals.csv", index=False)
+    print("Results saved to nucleus_signals.csv")
+
 if __name__ == "__main__":
-    # Step 1: Load image data
+    # Load images
     image_data = load_image_data(genes, fields, channels)
     
-    # Step 2: Process images for segmentation and filtering
-    process_images(image_data)
+    # Process images
+    results = process_images(image_data)
+    
+    # Save results to CSV
+    save_results(results)
